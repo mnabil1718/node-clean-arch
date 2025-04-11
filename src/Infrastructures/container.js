@@ -5,7 +5,7 @@ const { createContainer } = require('instances-container');
 // external agency
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
-const pool = require('./database/postgres/pool');
+const pool = require('./databases/postgresql/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepositoryPostgresql = require('./repository/UserRepositoryPostgresql');
