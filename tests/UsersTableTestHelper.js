@@ -21,6 +21,16 @@ const UsersTableTestHelper = {
     return res.rows;
   },
 
+  async findUserByUsername(username) {
+    const query = {
+      text: 'SELECT * FROM users WHERE username = $1',
+      values: [username]
+    };
+
+    const res = await pool.query(query);
+    return res.rows;
+  },
+
   async truncateTable() {
     await pool.query('TRUNCATE TABLE users');
   }

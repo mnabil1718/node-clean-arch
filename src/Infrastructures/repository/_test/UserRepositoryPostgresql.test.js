@@ -65,5 +65,54 @@ describe('UserRepositoryPostgresql', () => {
     });
   });
 
+  describe('getPasswordByUsername function', () => {
+    it('should throw InvariantError when username non-existent', async () => {
+      const userRepo = new UserRepositoryPostgresql(pool, {});
+
+      expect(userRepo.getPasswordByUsername('random_username')).rejects.toThrow(InvariantError);
+    });
+
+
+    it('should return correct password when username exists', async () => {
+      const payload = {
+        username: 'dicoding',
+        password: 'secret',
+        fullname: 'Dicoding Indonesia'
+      };
+
+      const userRepo = new UserRepositoryPostgresql(pool, {});
+      await UsersTableTestHelper.addUser(payload);
+
+      const password = await userRepo.getPasswordByUsername(payload.username);
+
+      expect(password).toBe(payload.password);
+    });
+  });
+
+  describe('getIdByUsername function', () => {
+    it('should throw InvariantError when username non-existent', async () => {
+      const userRepo = new UserRepositoryPostgresql(pool, {});
+
+      expect(userRepo.getIdByUsername('random_id')).rejects.toThrow(InvariantError);
+    });
+
+
+    it('should return correct id when username exists', async () => {
+      const payload = {
+        id: 'user-123',
+        username: 'dicoding',
+        password: 'secret',
+        fullname: 'Dicoding Indonesia'
+      };
+
+      const userRepo = new UserRepositoryPostgresql(pool, {});
+      await UsersTableTestHelper.addUser(payload);
+
+      const id = await userRepo.getIdByUsername(payload.username);
+
+      expect(id).toBe(payload.id);
+    });
+  });
+
 
 });

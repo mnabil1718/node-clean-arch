@@ -38,6 +38,36 @@ class UserRepositoryPostgresql extends UserRepository {
     return new RegisteredUser({ id, username, fullname });
   }
 
+  async getPasswordByUsername(username) {
+    const query = {
+      text: 'SELECT password FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const res = await this.#pool.query(query);
+
+    if (!res.rowCount) {
+      throw new InvariantError('username not found.');
+    }
+
+    return res.rows[0].password;
+  }
+
+  async getIdByUsername(username) {
+    const query = {
+      text: 'SELECT id FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const res = await this.#pool.query(query);
+
+    if (!res.rowCount) {
+      throw new InvariantError('username not found.');
+    }
+
+    return res.rows[0].id;
+  }
+
 
 }
 

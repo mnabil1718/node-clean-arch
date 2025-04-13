@@ -1,4 +1,5 @@
 const PasswordHash = require('../../Applications/security/PasswordHash');
+const AuthenticationError = require('../../Commons/exceptions/AuthenticationError');
 
 class BcryptPasswordHash extends PasswordHash {
   #bcrypt;
@@ -12,6 +13,14 @@ class BcryptPasswordHash extends PasswordHash {
 
   async hash(plainText) {
     return this.#bcrypt.hash(plainText, this.#saltRound);
+  };
+
+  async compare(plainPassword, encryptedPassword) {
+    const res = await this.#bcrypt.compare(plainPassword, encryptedPassword);
+
+    if (!res) {
+      throw new AuthenticationError('invalid credentials.');
+    }
   };
 }
 

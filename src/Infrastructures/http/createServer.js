@@ -1,6 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const config = require('../../Commons/config');
 const users = require('../../Interfaces/http/api/users');
+const authentications = require('../../Interfaces/http/api/authentications');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const ClientError = require('../../Commons/exceptions/ClientError');
 
@@ -14,6 +15,10 @@ const createServer = async (container) => {
   await server.register([
     {
       plugin: users,
+      options: { container }
+    },
+    {
+      plugin: authentications,
       options: { container }
     }
   ]);
@@ -37,7 +42,7 @@ const createServer = async (container) => {
 
       return h.response({
         status: 'error',
-        message: 'an error occured on our server side.'
+        message: 'an error occured on our server side.',
       }).code(500);
     }
 

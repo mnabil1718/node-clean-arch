@@ -1,7 +1,7 @@
 const RegisterUser = require("../entities/RegisterUser");
 
 describe('RegisterUser', () => {
-  it('should contain erro when payload did not contain needed properties', () => {
+  it('should contain error when payload did not contain needed properties', () => {
     const payload = {
       username: 'abc',
       password: 'aaa'
